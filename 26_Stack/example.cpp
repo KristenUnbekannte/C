@@ -27,7 +27,6 @@ char pop(LIFO *lifo)
 	return lifo->arr[--lifo->top];
 }
 
-
 int main()
 {
 	LIFO lifo;
