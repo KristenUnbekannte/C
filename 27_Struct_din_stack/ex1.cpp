@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 
 using namespace std;
@@ -34,12 +33,13 @@ void push_m(Student *st, int quan, int id)
 }
 int lastname(Student *st)
 {
-	cout << "Choose the student:\n";
+	cout << "\nChoose the student:\n";
 	for (int i = 0; i < counter; ++i)
 	{
 		cout << i + 1 << ". " << st[i].fio << endl;
 	}
 	int choose;
+	cout << "Your choice :";
 	cin >> choose;
 	return choose - 1;
 }
@@ -65,8 +65,41 @@ void all(Student *st,int quan)
 	for (int c = 0; c < counter;++c)
 		cout << st[c].fio << " " << st[c].grup << " " << st[c].book << " " << average(st, quan, c)<< endl;
 }
+void high_achiever(Student *st, int quan)
+{
+	for (int i = 0; i < counter; ++i)
+	{
+		int count = 0;
+		for (int j = 0; j < quan; ++j)
+		{
+			if (st[i].mas[j] < 9)
+			{
+				count++; break;
+			}
+		}
+		if (count == 0)
+			cout << st[i].fio << endl;
+	}
+}
+void debitors(Student *st, int quan)
+{
+	for (int i = 0; i < counter; ++i)
+	{
+		int count = 0;
+		for (int j = 0; j < quan; ++j)
+		{
+			if (st[i].mas[j] < 4)
+			{
+				count++; break;
+			}
+		}
+		if (count != 0)
+			cout << st[i].fio << endl;
+	}
+}
 int main()
 {
+	setlocale(0, " ");
 	Student student[size];
 	int choose;
 	cout << "Choose the point of menu:\n\
@@ -77,7 +110,8 @@ int main()
 	5.Total list;\n\
 	6.High achiever;\n\
 	7.Debtors;\n\
-	8.Exit.\n";
+	8.Exit.\n\
+  Your choice: ";
 
 	cin >> choose;
 
@@ -87,7 +121,7 @@ int main()
 		int id;
 		if (choose == 1)
 		{
-			cout << "How much students want you add? - ";
+			cout << "\nHow much students want you add? - ";
 			cin >> quan;
 			for (int i = 0; i < quan;++i)
 				push_st(&student[size]);
@@ -95,7 +129,7 @@ int main()
 		if (choose == 2)
 		{
 			id = lastname(&student[size]);
-			cout << "How much marks want you add? - ";
+			cout << "\nHow much marks want you add? - ";
 			cin >> quan;
 			push_m(&student[size], quan, id);
 		}
@@ -106,7 +140,7 @@ int main()
 		if (choose == 4)
 		{
 			id = lastname(&student[size]);
-			cout << "\nAverade score " << student[0].fio <<" = "<< average(&student[size], quan, id) << endl;
+			cout << "\nAverade score = "<< average(&student[size], quan, id) << endl;
 		}
 		if (choose == 5)
 		{
@@ -114,21 +148,24 @@ int main()
 		}
 		if (choose == 6)
 		{
-			all(&student[size], quan);
+			cout << "High achievers:\n";
+			high_achiever(&student[size], quan);
 		}
 		if (choose == 7)
 		{
-			all(&student[size], quan);
+			cout << "Debitors:\n";
+			debitors(&student[size], quan);
 		}
 		cout << "Choose the point of menu:\n\
-		1.Add new student;\n\
-		2.Add marks;\n\
-		3.Total average score;\n\
-		4.Average students score;\n\
-		5.Total list;\n\
-		6.High achiever;\n\
-		7.Debtors;\n\
-		8.Exit.\n";
+	1.Add new student;\n\
+	2.Add marks;\n\
+	3.Total average score;\n\
+	4.Average students score;\n\
+	5.Total list;\n\
+	6.High achiever;\n\
+	7.Debtors;\n\
+	8.Exit.\n\
+  Your choice: ";
 
 		cin >> choose;
 	}
