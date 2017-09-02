@@ -178,9 +178,10 @@ int main()
 {
 	setlocale(0, "");
 	Account account[size];
-
-	int choose;
-	cout << "Choose the point of menu:\n\
+	int choose = 0;
+	while (choose != 12)
+	{
+		cout << "\nChoose the point of menu:\n\
 	1.Add new client;\n\
 	2.Add money to an account;\n\
 	3.Debit money from an account;\n\
@@ -194,10 +195,7 @@ int main()
 	11.All information;\n\
 	12.Exit.\n\
   Your choice: ";
-	cin >> choose;
-
-	while (choose != 12)
-	{
+		cin >> choose;
 		int quan;
 		int id;
 		if (choose == 1)
@@ -250,22 +248,6 @@ int main()
 		}
 		if (choose == 11)
 			all(&account[size]);
-
-		cout << "\nChoose the point of menu:\n\
-	1.Add new client;\n\
-	2.Add money to an account;\n\
-	3.Debit money from an account;\n\
-	4.Search by account number;\n\
-	5.Search by account code;\n\
-	6.Search by owner;\n\
-	7.Sort by owner;\n\
-	8.Sort by account code;\n\
-	9.Delete information by owner;\n\
-	10.Delete information account code;\n\
-	11.All information;\n\
-	12.Exit.\n\
-  Your choice: ";
-		cin >> choose;
 	}
 	exit;
 	return 0;
