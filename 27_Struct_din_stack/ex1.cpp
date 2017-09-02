@@ -1,5 +1,5 @@
+//Создать структуру данных студент с полями: ФИО   ГРУППА   НОМЕР ЗАЧЕТКИ  Массив оценок 
 #include<iostream>
-
 using namespace std;
 const int size = 10;
 int counter = 0;
