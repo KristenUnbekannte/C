@@ -9,246 +9,164 @@
 Реализовать сортировку по фамилии владельца и по номеру счета.
 Реализовать удаление в массиве структур по коду счета и по владельцу.*/
 
-#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
-#include<cstring>
+#include <stdlib.h>
 using namespace std;
-const int size = 12;
+const int size = 10;
 int counter = 0;
 
-struct Account
+struct Student
 {
-	int num_account;
-	int id_account;
-	char fio[15];
-	int money;
-	char date[10];
-	int rate;
+	char fio[12];
+	int grup;
+	int book;
+	int mas[5];
 };
-void push(Account *ac)
+void push_st(Student *st)
 {
-	cout << "\nInput account number: ";
-	cin >> ac[counter].num_account;
-	cout << "\nInput account id: ";
-	cin >> ac[counter].id_account;
-	cout << "\nInput lastname: ";
-	cin >> ac[counter].fio;
-	cout << "\nInput amount: ";
-	cin >> ac[counter].money;
-	cout << "\nInput date: ";
-	cin >> ac[counter].date;
-	cout << "\nInput interest rate: ";
-	cin >> ac[counter].rate;
+	cout << "\nInput students lastname: ";
+	cin >> st[counter].fio;
+	cout << "\nInput number of grupp: ";
+	cin >> st[counter].grup;
+	cout << "\nInput number of book: ";
+	cin >> st[counter].book;
 	++counter;
 }
-int lastname(Account *ac)
+void push_m(Student *st, int quan, int id)
 {
-	cout << "\nChoose the client:\n";
+	int j;
+	for (int i = 0; i < quan; ++i)
+	{
+		cout << "\nInput mark: ";
+		cin >> j;
+		st[id].mas[i]=j;
+	}
+}
+int lastname(Student *st)
+{
+	cout << "\nChoose the student:\n";
 	for (int i = 0; i < counter; ++i)
 	{
-		cout << i + 1 << ". " << ac[i].fio << endl;
+		cout << i + 1 << ". " << st[i].fio << endl;
 	}
 	int choose;
 	cout << "Your choice :";
 	cin >> choose;
 	return choose - 1;
 }
-int account_number(Account *ac)
+double average(Student *st, int quan, int id)
 {
-	cout << "\nChoose the account number:\n";
+	double av = 0;
+	for (int i = 0; i < quan; ++i)
+	{
+		av += st[id].mas[i];
+	}
+	return av/quan;
+}
+double average_all(Student *st, int quan)
+{
+	double av = 0;
+	for (int i = 0; i < counter;++i)
+		for (int j = 0; j < quan; ++j)
+			av += st[i].mas[j];
+	return av / (quan*counter);
+}
+void all(Student *st,int quan)
+{
+	for (int c = 0; c < counter;++c)
+		cout << st[c].fio << " " << st[c].grup << " " << st[c].book << " " << average(st, quan, c)<< endl;
+}
+void high_achiever(Student *st, int quan)
+{
 	for (int i = 0; i < counter; ++i)
 	{
-		cout << i + 1 << ". " << ac[i].num_account << endl;
-	}
-	int choose;
-	cout << "Your choice :";
-	cin >> choose;
-	return choose - 1;
-}
-int account_id(Account *ac)
-{
-	cout << "\nChoose the account code:\n";
-	for (int i = 0; i < counter; ++i)
-	{
-		cout << i + 1 << ". " << ac[i].id_account << endl;
-	}
-	int choose;
-	cout << "Your choice :";
-	cin >> choose;
-	return choose - 1;
-}
-void add(Account *ac, int id)
-{
-	int quantity;
-	cout << "\nInput amount you want to add? - ";
-	cin >> quantity;
-	ac[id].money += quantity;
-	cout << "\nAmount on the account is " << ac[id].money << endl;
-}
-void decrease(Account *ac, int id)
-{
-	int quantity;
-	cout << "\nInput amount you want to take away? -";
-	cin >> quantity;
-	if (quantity>ac[id].money)
-		cout << "\nNot enough money on the account!\n";
-	else
-	{
-		ac[id].money -= quantity;
-		cout << "\nAmount on the account is " << ac[id].money << endl;
-	}
-}
-void search(Account *ac, int id)
-{
-	cout << "\nAccount number: "<<ac[id].num_account;
-	cout << "\nAccount id: " << ac[id].id_account;
-	cout << "\nLastname: "<<ac[id].fio;
-	cout << "\nAmount: "<<ac[id].money;
-	cout << "\nDate: "<<ac[id].date;
-	cout << "\nInterest rate: " << ac[id].rate;
-}
-void delete_inf(Account *ac, int id)
-{
-	for (int i = id; i < counter; ++i)
-	{
-		ac[i].num_account = ac[i+1].num_account;
-		ac[i].id_account = ac[i + 1].id_account;
-		strcpy(ac[i].fio,ac[i + 1].fio);
-		ac[i].money = ac[i + 1].money;
-		strcpy(ac[i].date,ac[i + 1].date);
-		ac[i].rate = ac[i + 1].rate;
-	}
-	--counter;
-}
-void exchange(Account *ac, int i, int j)
-{
-	int temp;
-	char str[15];
-
-	temp = ac[j].num_account;
-	ac[j].num_account = ac[i].num_account;
-	ac[i].num_account = temp;
-
-	temp = ac[j].id_account;
-	ac[j].id_account = ac[i].id_account;
-	ac[i].id_account = temp;
-
-	strcpy(str, ac[j].fio);
-	strcpy(ac[j].fio, ac[i].fio);
-	strcpy(ac[i].fio, str);
-
-	temp = ac[j].money;
-	ac[j].money = ac[i].money;
-	ac[i].money = temp;
-
-	strcpy(str, ac[j].date);
-	strcpy(ac[j].date, ac[i].date);
-	strcpy(ac[i].date, str);
-
-	temp = ac[j].rate;
-	ac[j].rate = ac[i].rate;
-	ac[i].rate = temp;
-}
-void sort_code(Account *ac)
-{
-	for (int i = 1; i < counter; ++i)
-		for (int j = 0; j < i; ++j)
+		int count = 0;
+		for (int j = 0; j < quan; ++j)
 		{
-			if (ac[j].id_account > ac[i].id_account)
-				exchange(ac, i, j);
+			if (st[i].mas[j] < 9)
+			{
+				count++; break;
+			}
 		}
+		if (count == 0)
+			cout << st[i].fio << endl;
+	}
 }
-void sort_owner(Account *ac)
-{
-	for (int i = 1; i < counter; ++i)
-		for (int j = 0; j < i; ++j)
-		{	
-			if (strcmp(ac[j].fio, ac[i].fio) > 0)
-				exchange(ac, i, j);
-		}
-}
-void all(Account *ac)
+void debitors(Student *st, int quan)
 {
 	for (int i = 0; i < counter; ++i)
 	{
-		cout << i + 1 << ". account number: " << ac[i].num_account << ": id: " << ac[i].id_account << "; lastname:" << ac[i].fio << "; amount: " << ac[i].money << "; date: " << ac[i].date << "; rate: " << ac[i].rate<<endl;
+		int count = 0;
+		for (int j = 0; j < quan; ++j)
+		{
+			if (st[i].mas[j] < 4)
+			{
+				count++; break;
+			}
+		}
+		if (count != 0)
+			cout << st[i].fio << endl;
 	}
 }
 int main()
 {
-	setlocale(0, "");
-	Account account[size];
-	int choose = 0;
-	while (choose != 12)
+	setlocale(0, " ");
+	Student student[size];
+	int choose=0;
+	int quan;
+	int id;
+
+	while (choose != 8)
 	{
-		cout << "\nChoose the point of menu:\n\
-	1.Add new client;\n\
-	2.Add money to an account;\n\
-	3.Debit money from an account;\n\
-	4.Search by account number;\n\
-	5.Search by account code;\n\
-	6.Search by owner;\n\
-	7.Sort by owner;\n\
-	8.Sort by account code;\n\
-	9.Delete information by owner;\n\
-	10.Delete information account code;\n\
-	11.All information;\n\
-	12.Exit.\n\
+		cout << "Choose the point of menu:\n\
+	1.Add new student;\n\
+	2.Add marks;\n\
+	3.Total average score;\n\
+	4.Average students score;\n\
+	5.Total list;\n\
+	6.High achiever;\n\
+	7.Debtors;\n\
+	8.Exit.\n\
   Your choice: ";
 		cin >> choose;
-		int quan;
-		int id;
+
 		if (choose == 1)
 		{
-			cout << "\nHow much clients want you add? - ";
+			cout << "\nHow much students want you add? - ";
 			cin >> quan;
-			for (int i = 0; i < quan; ++i)
-				push(&account[size]);
+			for (int i = 0; i < quan;++i)
+				push_st(&student[size]);
 		}
-		if (choose == 2)
+		else if (choose == 2)
 		{
-			id = lastname(&account[size]);
-			add(&account[size], id);
+			id = lastname(&student[size]);
+			cout << "\nHow much marks want you add? - ";
+			cin >> quan;
+			push_m(&student[size], quan, id);
 		}
-		if (choose == 3)
+		else if(choose == 3)
 		{
-			id = lastname(&account[size]);
-			decrease(&account[size], id);
+			cout << "\nTotal averade score = " << average_all(&student[size], quan) << endl;
 		}
-		if (choose == 4)
+		else if(choose == 4)
 		{
-			id = account_number(&account[size]);
-			search(&account[size], id);
+			id = lastname(&student[size]);
+			cout << "\nAverade score = "<< average(&student[size], quan, id) << endl;
 		}
-		if (choose == 5)
+		else if(choose == 5)
 		{
-			id = account_id(&account[size]);
-			search(&account[size], id);
+			all(&student[size], quan);
 		}
-		if (choose == 6)
+		else if(choose == 6)
 		{
-			id = lastname(&account[size]);
-			search(&account[size], id);
+			cout << "High achievers:\n";
+			high_achiever(&student[size], quan);
 		}
-		if (choose == 7)
-			sort_owner(&account[size]);
-
-		if (choose == 8)
-			sort_code(&account[size]);
-
-		if (choose == 9)
+		else if(choose == 7)
 		{
-			id = lastname(&account[size]);
-			delete_inf(&account[size], id);
+			cout << "Debitors:\n";
+			debitors(&student[size], quan);
 		}
-		if (choose == 10)
-		{
-			id = account_id(&account[size]);
-			delete_inf(&account[size], id);
-		}
-		if (choose == 11)
-			all(&account[size]);
 	}
-	exit;
 	return 0;
 }
